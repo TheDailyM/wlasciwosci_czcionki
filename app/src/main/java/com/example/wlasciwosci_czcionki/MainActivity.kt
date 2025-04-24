@@ -3,17 +3,17 @@ package com.example.wlasciwosci_czcionki
 import android.os.Bundle
 import android.widget.Button
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-lateinit var spinner: SeekBar;
-lateinit var button: Button
-var wielkosc_czcionki: Int = 14
-lateinit var pole: TextView
+lateinit var spinner: SeekBar
+lateinit var button_next: Button
+lateinit var cytat: TextView
+lateinit var text_rozmiar: TextView
+var process_float: Float = 0.0f
+var aktywny_napis: Int = 2
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +27,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         spinner = findViewById(R.id.Spinner)
-        button = findViewById(R.id.Button_next)
-        pole = findViewById(R.id.Text_pole)
+        button_next = findViewById(R.id.Button_next)
+        cytat = findViewById(R.id.Cytat)
+        text_rozmiar = findViewById(R.id.Text_rozmiar)
 
         val powitanie = arrayOf("Dzień dobry", "Good Morning", "Buenos dias");
 
@@ -43,11 +44,24 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seek: SeekBar) {
 
                 // miejsce na mój kod!!
+                process_float = (1 * seek.progress).toFloat()
 
-                val output = "Progress is: " + seek.progress + "%"
-                Toast.makeText(this@MainActivity, output , Toast.LENGTH_SHORT).show()
+                text_rozmiar.text = "Rozmiar: " + process_float.toInt()
+                cytat.textSize = process_float;
+
             }
         })
+
+        button_next.setOnClickListener {
+            if(aktywny_napis<2){
+                aktywny_napis++
+                cytat.text = powitanie[aktywny_napis]
+            }
+            else{
+                aktywny_napis = 0
+                cytat.text = powitanie[aktywny_napis]
+            }
+        }
 
     }
 }
